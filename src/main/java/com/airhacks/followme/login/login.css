@@ -1,0 +1,47 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+
+/* 
+ * This file can be manually injected into your file login.fxml via:
+ * 
+ * <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.airhacks.followme.login.LoginPresenter">
+ *     <stylesheets>
+ *         <URL value="@login.css"/>
+ *     </stylesheets>
+ * </AnchorPane>
+ * 
+ * The above shown soucecode will be automatically generated if you have the
+ * options to create (and to inject) the 'optional' .css file into your 
+ * file login.fxml selected in the page 'Optional Files'.
+ * 
+ * Created on : 18-08-2017, 21:34:10
+ * Author     : diego
+ */
+.login-button{
+    -fx-background-color: #3196DE;
+}
+
+.text-input.error {
+    -fx-focus-color: #d35244;
+    -fx-faint-focus-color: #d3524422;
+
+    -fx-highlight-fill: -fx-accent;
+    -fx-highlight-text-fill: white;
+    -fx-background-color:
+        -fx-focus-color,
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-insets: -0.2, 1, -1.4, 3;
+    -fx-background-radius: 3, 2, 4, 0;
+}
+
+
+.label.error {
+    -fx-padding: 0 0 5 0;
+    -fx-text-alignment: center;
+    -fx-text-fill: red;
+}
