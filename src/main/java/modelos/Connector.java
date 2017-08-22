@@ -24,6 +24,7 @@ public class Connector {
     
         String login = "root";
         String url= "jdbc:mysql://localhost:3306/ferreteria?autoReconnect=true&useSSL=true";
+//        String url = "jdbc:mysql://127.0.0.1:3306/ferreteria?autoReconnect=true&useSSL=true";
 //        String url= "jdbc:mysql://localhost:3306/ferreteria";
         String password = "205243";
 //        String url = "jdbc:mysql://10.20.224.100:3306/fact_gruas";

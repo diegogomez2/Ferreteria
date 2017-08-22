@@ -5,7 +5,9 @@
  */
 package com.airhacks.followme.login;
 
+import entities.EntityUsuarios;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.persistence.NoResultException;
 import modelos.UserModel;
+import modelos.UserQuery;
+import org.eclipse.persistence.exceptions.DatabaseException;
 import principal.PrincipalView;
 
 /**
@@ -30,19 +35,28 @@ public class LoginPresenter implements Initializable {
     PasswordField textoContraseña;
     @FXML
     Button botonIngresar;
+    UserQuery query;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
     }
     
     public void ingresar(){
-        if(!camposVacios()){
-            String user = textoUsuario.getText();
-            String pass = textoContraseña.getText();
-            UserModel modelo = UserModel.getInstance();
-            int result = modelo.verificarLogin(user, pass);
-            switch(result){
-                case 0:
+        try{
+            if(!camposVacios()){
+                query = new UserQuery();
+                String user = textoUsuario.getText();
+                String pass = textoContraseña.getText();
+                EntityUsuarios aux = query.getPasswordByUser(user);
+                if(aux.getPassUser().compareTo(pass) == 0){
+                    Stage logStage = (Stage)textoUsuario.getScene().getWindow();
+                    logStage.hide();
+                    PrincipalView mainView = new PrincipalView();
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(mainView.getView(), 1024, 800);
+                    stage.setTitle("Factusol");
+                    stage.setScene(scene);
+                    stage.show();
+                }else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Usuario y/o contraseña inválidos");
@@ -52,38 +66,27 @@ public class LoginPresenter implements Initializable {
                     textoContraseña.clear();
                     textoUsuario.getStyleClass().add("error");
                     textoContraseña.getStyleClass().add("error");
-                    break;
-                case 1:
-                    Stage logStage = (Stage)textoUsuario.getScene().getWindow();
-                    logStage.hide();
-                    PrincipalView mainView = new PrincipalView();
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(mainView.getView(), 1024, 800);
-                    stage.setTitle("Factusol");
-                    stage.setScene(scene);
-                    stage.show();
-                    break;
-                case 2:
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Debe ingresar usuario y contraseña");
-                    alert.setContentText("Vuelva a ingresar los datos");
-                    alert.showAndWait();
-                    break;
-                case 3:
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("La conexión a la base de datos falló");
-                    alert.setContentText("Vuelva a ingresarlo en otro momento");
-                    alert.showAndWait();
-                    break;
+                }
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Debe ingresar usuario y contraseña");
+                alert.setContentText("Vuelva a ingresar los datos");
+                alert.showAndWait();
             }
-        }else{
+        }catch(NoResultException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Debe ingresar usuario y contraseña");
             alert.setContentText("Vuelva a ingresar los datos");
             alert.showAndWait();
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("La conexión a la base de datos falló");
+            alert.setContentText("Por favor vuelva a intentarlo");
+            alert.showAndWait();
+            e.getMessage();
         }
     }
     
