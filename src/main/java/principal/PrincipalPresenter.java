@@ -30,6 +30,7 @@ public class PrincipalPresenter implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarPanel();
+        mostrarClientes();
 //        stackPane.getChildren().add(anchorClientes);
 //        stackPane.getChildren().remove(0);
 //        stackPane.getChildren().add(anchorClientes);
@@ -41,7 +42,7 @@ public class PrincipalPresenter implements Initializable {
     
     public void mostrarClientes(){
         try{
-            GridPane pane = (GridPane)FXMLLoader.load(getClass().getClassLoader().getResource("clientes/clientes.fxml"));
+            AnchorPane pane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("clientes/clientes.fxml"));
             anchorMain.getChildren().setAll(pane);
 //            anchorMain.getChildren().get(0).set
         }catch(IOException e){

@@ -5,10 +5,8 @@
  */
 package clientes;
 
-import entities.EntityClientes;
+
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +18,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javax.inject.Inject;
 import modelos.ClientModel;
-import modelos.ClientQuery;
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.Notifications;
 import pojos.Cliente;
 
 /**
@@ -32,8 +31,7 @@ public class ClientesPresenter implements Initializable {
     @FXML
     TableView tablaClientes;
     @Inject
-    private ObservableList<EntityClientes> clientData = FXCollections.observableArrayList();
-    ClientQuery query;
+    private ObservableList<Cliente> clientData = FXCollections.observableArrayList();
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,15 +40,18 @@ public class ClientesPresenter implements Initializable {
         return row;
         });
         loadData();
+        //TrayNotification tray = new TrayNotification();
+    }
+    
+    public void mostrarNotificacion(){
+        Notifications.create().title("Hola").text("Soy una notificacion").showWarning();
     }
     
     private void loadData(){
+        ClientModel model = ClientModel.getInstance();
 //        List<List<String>> data = modelo.listarClientes();
-        query = new ClientQuery();
-        List<EntityClientes> data = query.getClientes();
-        ObservableList<EntityClientes> dataClientes = FXCollections.observableArrayList(query.getClientes());
-        System.out.println(dataClientes.get(0).getRutCli());
-        System.out.println(dataClientes.get(0).getRutDigCli());
+//        List<Cliente> data = model.listarClientes();
+        ObservableList<Cliente> dataClientes = FXCollections.observableArrayList(model.listarClientes());
 //        ObservableList<Cliente> dataClientes = modelo.listarClientes();
         clientData = dataClientes;
 //        filteredData = new FilteredList<>(clientData, p -> true);
@@ -72,14 +73,14 @@ public class ClientesPresenter implements Initializable {
     
     public void definirColumnas(){
 //        tablaClientes.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        TableColumn rutCol = new TableColumn("Rut");    
-        rutCol.setCellValueFactory(new PropertyValueFactory<>("rutDigCli"));
+        TableColumn rutDigCol = new TableColumn("Rut");    
+        rutDigCol.setCellValueFactory(new PropertyValueFactory<>("rutDig"));
         TableColumn rznCol = new TableColumn("Razón Social");
-        rznCol.setCellValueFactory(new PropertyValueFactory<>("razCli"));
+        rznCol.setCellValueFactory(new PropertyValueFactory<>("razon"));
         TableColumn telCol = new TableColumn("Teléfono");
-        telCol.setCellValueFactory(new PropertyValueFactory<>("telCli"));
+        telCol.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         TableColumn dirCol = new TableColumn("Dirección");
-        dirCol.setCellValueFactory(new PropertyValueFactory<>("dirCli"));
-        tablaClientes.getColumns().setAll(rutCol, rznCol, telCol, dirCol);
+        dirCol.setCellValueFactory(new PropertyValueFactory<>("direccion"));
+        tablaClientes.getColumns().setAll(rutDigCol, rznCol, telCol, dirCol);
     }
 }

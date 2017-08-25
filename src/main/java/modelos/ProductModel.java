@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import pojos.Producto;
 
 /**
  *
@@ -36,8 +37,8 @@ public class ProductModel {
     Connection conn = null;
     
     //Lista los productos
-    public List<List<String>> listarProductos(){
-        List<List<String>> data = new ArrayList<>();         
+    public List<Producto> listarProductos() throws SQLException{
+        List<Producto> data = new ArrayList<>();         
         try{
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, login, password);
@@ -50,12 +51,31 @@ public class ProductModel {
                 String estdes = res.getString("des_prod");
                 String estprec = res.getString("prec_prod");
                 String estcant = res.getString("cant_prod");
-                data.add(Arrays.asList(estcod, estnom, estdes, estprec, estcant));
+                data.add(new Producto(Arrays.asList(estcod, estnom, estdes, estprec, estcant)));
             }
             res.close();
         }catch(SQLException e){
             System.out.println(e);
+            throw e;
         }catch(ClassNotFoundException e){}
         return data;
+    }
+
+    public void ingresarProducto(Producto producto) {
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(url, login, password);
+            PreparedStatement pstm = conn.prepareStatement("INSERT INTO Productos (cod_prod, nom_prod, des_prod, prec_prod, cant_prod) VALUES "
+                    + "(?, ?, ?, ?, ?)");
+            pstm.setString(1, producto.getCodProd());
+            pstm.setString(2, producto.getNomProd());
+            pstm.setString(3, producto.getDesProd());
+            pstm.setInt(4, producto.getPrecProd());
+            pstm.setInt(5, producto.getCantProd());
+            pstm.execute();
+            pstm.close();
+        }catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 }

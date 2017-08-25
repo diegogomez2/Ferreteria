@@ -22,29 +22,34 @@ public class Usuario {
         this.password = password;
     }
     
+    public Usuario(String user, String password){
+        this.user = new SimpleStringProperty(user);
+        this.password = new SimpleStringProperty(password);
+    }
+    
     public Usuario(){}
     
-    public void setUser(SimpleStringProperty user) {
-        this.user = user;
+    public void setUser(String user) {
+        this.user = new SimpleStringProperty(user);
     }
 
-    public void setPassword(SimpleStringProperty password) {
-        this.password = password;
+    public void setPassword(String password) {
+        this.password = new SimpleStringProperty(password);
     }
     
-    public void setId(SimpleIntegerProperty id){
-        this.id = id;
+    public void setId(int id){
+        this.id = new SimpleIntegerProperty(id);
     }
 
-    public SimpleStringProperty getUser() {
-        return user;
+    public String getUser() {
+        return user.get();
     }
 
-    public SimpleStringProperty getPassword() {
-        return password;
+    public String getPassword() {
+        return password.get();
     }
     
-    public SimpleIntegerProperty getId(){
-        return id;
+    public int getId(){
+        return id.get();
     }
 }

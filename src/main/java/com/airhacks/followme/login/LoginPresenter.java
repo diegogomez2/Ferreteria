@@ -5,7 +5,6 @@
  */
 package com.airhacks.followme.login;
 
-import entities.EntityUsuarios;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -17,10 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javax.persistence.NoResultException;
 import modelos.UserModel;
-import modelos.UserQuery;
-import org.eclipse.persistence.exceptions.DatabaseException;
+import pojos.Usuario;
 import principal.PrincipalView;
 
 /**
@@ -35,7 +32,6 @@ public class LoginPresenter implements Initializable {
     PasswordField textoContraseña;
     @FXML
     Button botonIngresar;
-    UserQuery query;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
@@ -43,19 +39,31 @@ public class LoginPresenter implements Initializable {
     public void ingresar(){
         try{
             if(!camposVacios()){
-                query = new UserQuery();
+                UserModel model = UserModel.getInstance();
                 String user = textoUsuario.getText();
                 String pass = textoContraseña.getText();
-                EntityUsuarios aux = query.getPasswordByUser(user);
-                if(aux.getPassUser().compareTo(pass) == 0){
-                    Stage logStage = (Stage)textoUsuario.getScene().getWindow();
-                    logStage.hide();
-                    PrincipalView mainView = new PrincipalView();
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(mainView.getView(), 1024, 800);
-                    stage.setTitle("Factusol");
-                    stage.setScene(scene);
-                    stage.show();
+                Usuario usuario = model.verificarLogin(user, pass);
+                if(usuario != null){
+                    if(usuario.getPassword().compareTo(pass) == 0){
+                        Stage logStage = (Stage)textoUsuario.getScene().getWindow();
+                        logStage.hide();
+                        PrincipalView mainView = new PrincipalView();
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(mainView.getView(), 1024, 800);
+                        stage.setTitle("Factusol");
+                        stage.setScene(scene);
+                        stage.show();
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Usuario y/o contraseña inválidos");
+                        alert.setContentText("Vuelva a ingresar los datos");
+                        alert.showAndWait();
+                        textoUsuario.clear();
+                        textoContraseña.clear();
+                        textoUsuario.getStyleClass().add("error");
+                        textoContraseña.getStyleClass().add("error");
+                    }
                 }else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
@@ -74,12 +82,6 @@ public class LoginPresenter implements Initializable {
                 alert.setContentText("Vuelva a ingresar los datos");
                 alert.showAndWait();
             }
-        }catch(NoResultException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Debe ingresar usuario y contraseña");
-            alert.setContentText("Vuelva a ingresar los datos");
-            alert.showAndWait();
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

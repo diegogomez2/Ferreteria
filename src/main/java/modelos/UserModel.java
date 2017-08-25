@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import pojos.Usuario;
 
 /**
  *
@@ -34,30 +35,28 @@ public class UserModel {
     Connection conn = null;
     
     //Verifica que el usuario y contraseña sean correctos
-    public int verificarLogin(String rut, String pass){
+    public Usuario verificarLogin(String rut, String pass) throws SQLException{
         try{
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, login, password);
             PreparedStatement pstm = conn.prepareStatement("SELECT * FROM Usuarios WHERE name_user = ?");
             pstm.setString(1, rut);
             ResultSet res = pstm.executeQuery();
-            while(res.next()){
-                String contraseña = res.getString("pass_user");
-                if(contraseña.compareTo(pass) == 0){
-                    return 1;
-                }
-            }
+            res.next();
+            String user = res.getString("name_user");
+            String contraseña = res.getString("pass_user");
             pstm.close();
+            res.close();
+            return new Usuario(user, contraseña);
         }
         catch(SQLException e){
             System.out.println("Error verificar login");
             System.out.println(e);
-            return 2;
+            throw e;
         }catch(ClassNotFoundException e){
             System.out.println("Error verificar login");
             System.out.println(e);
-            return 3;
+            return null;
         }
-        return 0;
     }
 }

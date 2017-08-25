@@ -16,114 +16,135 @@ import javafx.beans.property.StringProperty;
  * @author diego
  */
 public class Cliente {
-    StringProperty rut;
-    //StringProperty digito;
-    StringProperty razon;
-    StringProperty giro;
-    StringProperty telefono;
-    StringProperty celular;
-    StringProperty direccion;
-    StringProperty region;
-    StringProperty ciudad;
-    StringProperty comuna;
 
-    public Cliente(){}
-    
-    public Cliente(StringProperty rut, StringProperty razon, StringProperty giro, StringProperty telefono, StringProperty celular, StringProperty direccion, StringProperty region, StringProperty ciudad, StringProperty comuna) {
-        this.rut = rut;
-        this.razon = razon;
-        this.giro = giro;
-        this.telefono = telefono;
-        this.celular = celular;
-        this.direccion = direccion;
-        this.region = region;
-        this.ciudad = ciudad;
-        this.comuna = comuna;
+    private IntegerProperty rutCli;
+    private StringProperty digCli;
+    private StringProperty rutDigCli;
+    private StringProperty razCli;
+    private StringProperty girCli;
+    private StringProperty telCli;
+    private StringProperty celCli;
+    private StringProperty dirCli;
+    private StringProperty regCli;
+    private StringProperty ciuCli;
+    private StringProperty comCli;
+
+    public Cliente() {
     }
-    
+
+    public Cliente(IntegerProperty rut, StringProperty digito, StringProperty razon, StringProperty giro, StringProperty telefono, StringProperty celular, StringProperty direccion, StringProperty region, StringProperty ciudad, StringProperty comuna) {
+        this.rutCli = rut;
+        this.digCli = digito;
+        this.rutDigCli = new SimpleStringProperty(rut.toString() + "-" + digito.toString());
+        this.razCli = razon;
+        this.girCli = giro;
+        this.telCli = telefono;
+        this.celCli = celular;
+        this.dirCli = direccion;
+        this.regCli = region;
+        this.ciuCli = ciudad;
+        this.comCli = comuna;
+    }
+
     public Cliente(List<String> data) {
-        this.rut = new SimpleStringProperty((data.get(0)));
-        this.razon = new SimpleStringProperty(data.get(1));
-        this.giro = new SimpleStringProperty();
-        this.telefono = new SimpleStringProperty(data.get(2));
-        this.celular = new SimpleStringProperty();
-        this.direccion = new SimpleStringProperty(data.get(3));
-        this.region = new SimpleStringProperty();
-        this.ciudad = new SimpleStringProperty();
-        this.comuna = new SimpleStringProperty();
+        this.rutCli = new SimpleIntegerProperty();
+        this.digCli = new SimpleStringProperty();
+        this.rutDigCli = new SimpleStringProperty((data.get(0)));
+        this.razCli = new SimpleStringProperty(data.get(1));
+        this.girCli = new SimpleStringProperty();
+        this.telCli = new SimpleStringProperty(data.get(2));
+        this.celCli = new SimpleStringProperty();
+        this.dirCli = new SimpleStringProperty(data.get(3));
+        this.regCli = new SimpleStringProperty();
+        this.ciuCli = new SimpleStringProperty();
+        this.comCli = new SimpleStringProperty();
     }
 
-    public String getRut() {
-        return rut.get();
+    public int getRut() {
+        return rutCli.get();
+    }
+
+    public String getDigito() {
+        return digCli.get();
+    }
+
+    public String getRutDig() {
+        return rutDigCli.get();
     }
 
     public String getRazon() {
-        return razon.get();
+        return razCli.get();
     }
 
     public String getGiro() {
-        return giro.get();
+        return girCli.get();
     }
 
     public String getTelefono() {
-        return telefono.get();
+        return telCli.get();
     }
 
     public String getCelular() {
-        return celular.get();
+        return celCli.get();
     }
 
     public String getDireccion() {
-        return direccion.get();
+        return dirCli.get();
     }
 
     public String getRegion() {
-        return region.get();
+        return regCli.get();
     }
 
     public String getCiudad() {
-        return ciudad.get();
+        return ciuCli.get();
     }
 
     public String getComuna() {
-        return comuna.get();
+        return comCli.get();
     }
 
-    public void setRut(String rut) {
-        this.rut = new SimpleStringProperty(rut);
+    public void setRut(int rut) {
+        this.rutCli = new SimpleIntegerProperty(rut);
+    }
+
+    public void setDigito(String digito) {
+        this.digCli = new SimpleStringProperty(digito);
+    }
+
+    public void setRutDig(String rutDig) {
+        this.rutDigCli = new SimpleStringProperty(rutDig);
     }
 
     public void setRazon(String razon) {
-        this.razon = new SimpleStringProperty(razon);
+        this.razCli = new SimpleStringProperty(razon);
     }
 
     public void setGiro(String giro) {
-        this.giro = new SimpleStringProperty(giro);
+        this.girCli = new SimpleStringProperty(giro);
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = new SimpleStringProperty(telefono);
+        this.telCli = new SimpleStringProperty(telefono);
     }
 
     public void setCelular(String celular) {
-        this.celular = new SimpleStringProperty(celular);
+        this.celCli = new SimpleStringProperty(celular);
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = new SimpleStringProperty(direccion);
+        this.dirCli = new SimpleStringProperty(direccion);
     }
 
     public void setRegion(String region) {
-        this.region = new SimpleStringProperty(region);
+        this.regCli = new SimpleStringProperty(region);
     }
 
     public void setCiudad(String ciudad) {
-        this.ciudad = new SimpleStringProperty(ciudad);
+        this.ciuCli = new SimpleStringProperty(ciudad);
     }
 
     public void setComuna(String comuna) {
-        this.comuna = new SimpleStringProperty(comuna);
+        this.comCli = new SimpleStringProperty(comuna);
     }
-    
-   
 }
